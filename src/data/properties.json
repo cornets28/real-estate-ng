@@ -1,0 +1,42 @@
+[
+    {
+      "Id": 1,
+      "SellRent": 1,
+      "Name": "Henry's House",
+      "Type": "House",
+      "Price": 57700,
+      "Image": "prop-1"
+    },
+    {
+      "Id": 2,
+      "SellRent": 1,
+      "Name": "Nelly's House",
+      "Type": "House",
+      "Price": 23300,
+      "Image": "prop-2"
+    },
+    {
+      "Id": 3,
+      "SellRent": 2,
+      "Name": "Eve Home",
+      "Type": "House",
+      "Price": 36500,
+      "Image": "prop-3"
+    },
+    {
+      "Id": 4,
+      "SellRent": 2,
+      "Name": "Uptown Villa",
+      "Type": "House",
+      "Price": 62400,
+      "Image": "prop-4"
+    },
+    {
+      "Id": 5,
+      "SellRent": 1,
+      "Name": "Bella House",
+      "Type": "House",
+      "Price": 29000
+    }
+
+  ]
