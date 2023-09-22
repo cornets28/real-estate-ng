@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/model/user';
 import { UserServiceService } from 'src/app/services/user-service.service';
+import * as alertify from 'alertifyjs';
 
 @Component({
   selector: 'app-user-register',
@@ -79,6 +80,9 @@ export class UserRegisterComponent implements OnInit {
       this.userService.addUser(this.userData()); 
       this.registerationForm.reset()
       this.userSubmitted = false
+      alertify.success('Congratulations, you have successfully registered');
+    } else {
+      alertify.error('Please, provide the required fields');
     }
     
   }
