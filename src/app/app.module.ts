@@ -13,6 +13,7 @@ import { AddPropertyComponent } from './property/add-property/add-property.compo
 import { PropertyDetailComponent } from './property/property-detail/property-detail.component';
 import { UserLoginComponent } from './user/user-login/user-login.component';
 import { UserRegisterComponent } from './user/user-register/user-register.component';
+import { UserServiceService } from './services/user-service.service';
 
 const AppRoutes: Routes = [
   { path: '', component: PropertyListComponent },
@@ -45,6 +46,7 @@ const AppRoutes: Routes = [
   providers: [],
   bootstrap: [AppComponent],
   // @ts-ignore
-  HousingService
+  HousingService,
+  UserServiceService
 })
 export class AppModule { }
