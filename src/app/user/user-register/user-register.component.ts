@@ -11,6 +11,7 @@ export class UserRegisterComponent implements OnInit {
 
   registerationForm!: FormGroup;
   user: any = {};
+  userSubmitted: boolean = false;
   constructor(private fb: FormBuilder, private userService: UserServiceService) { }
 
   ngOnInit() {
@@ -62,8 +63,13 @@ export class UserRegisterComponent implements OnInit {
 
   onSubmit() {
     console.log(this.registerationForm.value);
-    this.user = Object.assign(this.user, this.registerationForm.value);
-    this.userService.addUser(this.user);
-    this.registerationForm.reset()
+    this.userSubmitted = true;
+    if (this.registerationForm.valid) {
+      this.user = Object.assign(this.user, this.registerationForm.value);
+      this.userService.addUser(this.user);
+      this.registerationForm.reset()
+      this.userSubmitted = false
+    }
+    
   }
 }
