@@ -18,9 +18,9 @@ export class NavBarComponent implements OnInit {
 
   loggedIn() {
     // @ts-ignore
-    this.loggedinUser = localStorage.getItem('token');
+    console.log("loggedinUser: ", localStorage.getItem('token'))
     // @ts-ignore
-    return  this.loggedinUser
+    return  this.loggedinUser = localStorage.getItem('token');
   }
 
   onLogout() {
