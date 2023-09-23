@@ -4,7 +4,7 @@ import { UserLoginComponent } from '../user/user-login/user-login.component';
 @Injectable({
   providedIn: 'root'
 })
-export class UserServiceService {
+export class UserService {
 
   constructor() { }
 
