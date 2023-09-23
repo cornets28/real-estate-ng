@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { UserLoginComponent } from '../user/user-login/user-login.component';
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +9,7 @@ export class UserServiceService {
   constructor() { }
 
   // if user already exists, do not overwrite it but add other users just created
- // @ts-ignore
-  addUser(user) {
+  addUser(user: UserLoginComponent) {
     let users: any[] = [];
     if (localStorage.getItem("Users")) {
       // @ts-ignore
