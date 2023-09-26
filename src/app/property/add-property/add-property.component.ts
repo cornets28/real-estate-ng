@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IProperty } from '../IProperty.interface';
+import { IPropertyBase } from 'src/app/model/ipropertybase';
 
 @Component({
   selector: 'app-add-property',
@@ -20,12 +20,17 @@ export class AddPropertyComponent implements OnInit {
   furnishTypes: Array<string> = ['Fully', 'Semi', 'unfurnished']
   locationType: Array<string> = ['East', 'West', 'South', 'North']
 
-  propertyView: IProperty = {
+  propertyView: IPropertyBase = {
     Id: 0,
     SellRent: 0,
     Name: '',
-    Type: '',
-    Price: 0
+    PType: '',
+    FType: '',
+    Price: null,
+    BHK: null,
+    BuiltArea: null,
+    City: '',
+    RIM: 0,
   };
 
   ngOnInit() {
@@ -35,7 +40,7 @@ export class AddPropertyComponent implements OnInit {
     this.router.navigate(['/'])
   }
 
-  onSubmit(Form: NgForm) {
+  onSubmit() {
     console.log("hello from form submission")
     console.log(this.addPropertyForm)
   }
