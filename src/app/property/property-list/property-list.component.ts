@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { HousingService } from 'src/app/services/housing.service';
-import { IProperty } from '../IProperty.interface';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -11,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 export class PropertyListComponent implements OnInit {
   SellRent = 1
   // @ts-expect-error
-  properties: Array<IProperty>;
+  properties: Array<IPropertyBase>;
 
   constructor(private route: ActivatedRoute, private housingSevice: HousingService) { }
 
@@ -22,6 +21,12 @@ export class PropertyListComponent implements OnInit {
     this.housingSevice.getAllProperties(this.SellRent).subscribe(
       data => {
         this.properties = data;
+        // @ts-ignore
+        const newProperties = JSON.parse(localStorage.getItem('newProp'))
+
+        if (newProperties.SellRent === this.SellRent) {
+          this.properties = [newProperties, ...this.properties];
+        }
         console.log(data);
         console.log(this.route.snapshot.url.toString())
       }, error => {
@@ -30,4 +35,5 @@ export class PropertyListComponent implements OnInit {
       }
     )
   }
+
 }
