@@ -2,9 +2,20 @@
   min-height: 400px;
 }
 
+.card-body h1 {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: #0069d9;
+    font-weight: bold;
+}
+
 .card-img-wrapper {
   overflow: hidden;
   position: relative;
+}
+
+.font-highlight {
+    font-style: italic;
+    color: red
 }
 
 .card:hover img {
