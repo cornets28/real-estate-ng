@@ -21,6 +21,12 @@ export class PropertyListComponent implements OnInit {
     this.housingSevice.getAllProperties(this.SellRent).subscribe(
       data => {
         this.properties = data;
+        // @ts-ignore
+        const newProperties = JSON.parse(localStorage.getItem('newProp'))
+
+        if (newProperties) {
+          this.properties = [newProperties, ...this.properties];
+        }
         console.log(data);
         console.log(this.route.snapshot.url.toString())
       }, error => {
@@ -29,4 +35,5 @@ export class PropertyListComponent implements OnInit {
       }
     )
   }
+
 }
