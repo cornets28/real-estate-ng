@@ -30,7 +30,46 @@ export class HousingService {
     )
   }
 
+  // addProperty(property: Property) {
+  //   let newProp = [property];
+
+  //   // Add new property in array if newProp alreay exists in local storage
+  //   if (localStorage.getItem('newProp')) {
+  //     // if yes, increase the id by 1
+  //      // @ts-ignore
+  //     newProp = [property, ...JSON.parse(localStorage.getItem('newProp'))];
+  //   }
+
+  //   localStorage.setItem('newProp', JSON.stringify(newProp));
+  // }
+
   addProperty(property: Property) {
     localStorage.setItem('newProp', JSON.stringify(property));
   }
+  
+  // Store the last generated id in local storage
+  // newPropID() {
+  //   if (localStorage.getItem('PID')) { // check if this key is already stored in local storage
+  //     // @ts-ignore
+  //     localStorage.setItem('PID', +localStorage.getItem('PID') + 1)
+  //      // @ts-ignore
+  //     return +localStorage.getItem('PID')
+  //   } else {
+  //     localStorage.setItem('PID', '101)')
+  //     return 101
+  //   }
+  // }
+
+  newPropID() {
+    if (localStorage.getItem('PID')) {
+      // @ts-ignore
+      localStorage.setItem('PID', String(+localStorage.getItem('PID') + 1));
+      // @ts-ignore
+      return +localStorage.getItem('PID');
+    } else {
+      localStorage.setItem('PID', '101');
+      return 101;
+    }
+  }
 }
+
