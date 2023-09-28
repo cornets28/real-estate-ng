@@ -20,7 +20,7 @@ export class PropertyDetailComponent implements OnInit {
 
   ngOnInit() {
     // the sign "+" is used here to convert propertyId onto a number
-    // this.propertyId = +this.route.snapshot.params['id'];
+    this.propertyId = +this.route.snapshot.params['id'];
     this.route.params.subscribe(
       (params) => {
         this.propertyId = +params['id'];
