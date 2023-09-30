@@ -17,7 +17,7 @@ namespace WebAPI.Controllers
         [HttpGet("")]
         public IEnumerable<string> GetTModels()
         {
-            return new string[] { "New York", "Atlanta", "Boston",};
+            return new string[] { "New York", "Atlanta", "Boston", "Chicago" };
         }
 
     }
