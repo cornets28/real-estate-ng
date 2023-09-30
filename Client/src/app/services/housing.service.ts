@@ -12,6 +12,10 @@ export class HousingService {
 
   constructor(private http: HttpClient) { }
 
+  getAllCities(): Observable<string[]> {
+    return this.http.get<string[]>('http://localhost:5072/api/city')
+  }
+
   // Get single property by its id
   getProperty(id: number) {
     return this.getAllProperties().pipe(
@@ -23,7 +27,7 @@ export class HousingService {
 
   getAllProperties(SellRent?: number): Observable<Property[]> {
     return this.http.get('data/properties.json')
-    // convert properties into array   
+    // convert properties into array
     .pipe(
       map(data => {
         const propertiesArray: Array<Property> = [];
@@ -39,9 +43,9 @@ export class HousingService {
               }
             } else {
               // @ts-ignore
-              propertiesArray.push(localProperties[id]); 
+              propertiesArray.push(localProperties[id]);
             }
-           
+
           }
         }
 
@@ -57,8 +61,8 @@ export class HousingService {
             // @ts-ignore
             propertiesArray.push(data[id]);
           }
-          
-         
+
+
         }
         return propertiesArray;
       })
@@ -78,7 +82,7 @@ export class HousingService {
     localStorage.setItem('newProp', JSON.stringify(newProp));
   }
 
-  
+
   //Store the last generated id in local storage
   newPropID() {
     if (localStorage.getItem('PID')) { // check if this key is already stored in local storage

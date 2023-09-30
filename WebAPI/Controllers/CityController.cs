@@ -13,11 +13,11 @@ namespace WebAPI.Controllers
         public CityController()
         {
         }
-
+        // Get api/city
         [HttpGet("")]
         public IEnumerable<string> GetTModels()
         {
-            return new string[] { "New York", "Atlanta", "Boston",};
+            return new string[] { "New York", "Atlanta", "Boston", "Chicago" };
         }
 
     }
