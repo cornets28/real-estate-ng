@@ -7,7 +7,7 @@ Client/out-tsc
 Client/bazel-out
 
 # Node
-**node_modules
+Client/node_modules
 
 npm-debug.log
 yarn-error.log

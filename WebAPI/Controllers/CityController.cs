@@ -13,7 +13,7 @@ namespace WebAPI.Controllers
         public CityController()
         {
         }
-
+        // Get api/city
         [HttpGet("")]
         public IEnumerable<string> GetTModels()
         {
