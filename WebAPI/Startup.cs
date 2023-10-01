@@ -13,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
 using WebAPI.Data;
+using WebAPI.Data.Repo;
 
 namespace WebAPI
 {
@@ -31,6 +32,8 @@ namespace WebAPI
             services.AddCors();
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddControllers();
+            services.AddScoped<ICityRepository, CityRepository>();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
