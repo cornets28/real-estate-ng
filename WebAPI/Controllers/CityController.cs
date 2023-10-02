@@ -1,7 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+// using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using WebAPI.Models;
+using WebAPI.Dtos;
 using WebAPI.Interfaces;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
@@ -10,8 +17,10 @@ namespace WebAPI.Controllers
     public class CityController : ControllerBase
     {
         private readonly IUnitOfWork uow;
-        public CityController(IUnitOfWork uow) {
+        private readonly IMapper mapper;
+        public CityController(IUnitOfWork uow, IMapper mapper) {
             this.uow = uow;
+            this.mapper = mapper;
         }
 
         // GET api/city
@@ -19,13 +28,19 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetCities()
         {
             var cities = await uow.CityRepository.GetCitiesAsync();
-            return Ok(cities);
+
+            var citiesDto = mapper.Map<IEnumerable<CityDto>>(cities);
+
+            return Ok(citiesDto);
         }
 
         // POST api/city/post --Post the data in JSON Format
         [HttpPost("post")]
-        public async Task<IActionResult> AddCity(City city)
-        {
+        public async Task<IActionResult> AddCity(CityDto cityDto)
+        { 
+            var city = mapper.Map<City>(cityDto);
+            city.LastUpdatedOn = System.DateTime.Now;
+            city.LastUpdatedBy = 1;
             uow.CityRepository.AddCity(city);
             await uow.SaveAsync();
             return StatusCode(201);

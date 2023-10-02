@@ -15,6 +15,7 @@ using WebAPI.Models;
 using WebAPI.Data;
 using WebAPI.Data.Repo;
 using WebAPI.Interfaces;
+using WebAPI.Helpers;
 
 namespace WebAPI
 {
@@ -34,6 +35,7 @@ namespace WebAPI
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddControllers();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             
             services.AddSwaggerGen(c =>
             {
