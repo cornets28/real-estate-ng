@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+// using Microsoft.EntityFrameworkCore;
 using WebAPI.Models;
 
 namespace WebAPI.Interfaces
@@ -12,5 +12,6 @@ namespace WebAPI.Interfaces
         Task<IEnumerable<City>> GetCitiesAsync();
         void AddCity(City city);
         void DeleteCity(int CityId);
+        Task<City> FindCity(int id);
     }
 }

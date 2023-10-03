@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-// using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dtos;
 using WebAPI.Interfaces;
@@ -34,6 +34,40 @@ namespace WebAPI.Controllers
             return Ok(citiesDto);
         }
 
+        // PUT api/city/updateCitiName/1 
+        [HttpPut("updateCitiName/{id}")]
+        public async Task<IActionResult> UpdateCity(int id, CityDto cityDto) {
+            var cityFromDb = await uow.CityRepository.FindCity(id);
+            cityFromDb.LastUpdatedOn = System.DateTime.Now;
+            cityFromDb.LastUpdatedBy = 1;
+            mapper.Map(cityDto, cityFromDb);
+            await uow.SaveAsync();
+            return StatusCode(201);
+        }
+
+         [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateCity(int id, CityUpdateDto cityDto) {
+            var cityFromDb = await uow.CityRepository.FindCity(id);
+            cityFromDb.LastUpdatedOn = System.DateTime.Now;
+            cityFromDb.LastUpdatedBy = 1;
+            mapper.Map(cityDto, cityFromDb);
+            await uow.SaveAsync();
+            return StatusCode(201);
+        }
+
+        // PATCH api/city/update/1 
+         [HttpPatch("update/{id}")]
+        public async Task<IActionResult> UpdateCityPatch(int id, JsonPatchDocument<City> cityToPatch)
+        {
+            var cityFromDb = await uow.CityRepository.FindCity(id);
+            cityFromDb.LastUpdatedBy = 1;
+            cityFromDb.LastUpdatedOn = DateTime.Now;
+
+            cityToPatch.ApplyTo(cityFromDb, ModelState);
+            await uow.SaveAsync();
+            return StatusCode(200);
+        }
+
         // POST api/city/post --Post the data in JSON Format
         [HttpPost("post")]
         public async Task<IActionResult> AddCity(CityDto cityDto)
@@ -47,7 +81,7 @@ namespace WebAPI.Controllers
         }
 
         // Delete a city
-     [HttpDelete("delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteCity(int id)
         {
             uow.CityRepository.DeleteCity(id);
