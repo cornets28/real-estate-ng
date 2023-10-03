@@ -34,9 +34,19 @@ namespace WebAPI.Controllers
             return Ok(citiesDto);
         }
 
-        // PUT api/city/update/1 
-        [HttpPut("update/{id}")]
+        // PUT api/city/updateCitiName/1 
+        [HttpPut("updateCitiName/{id}")]
         public async Task<IActionResult> UpdateCity(int id, CityDto cityDto) {
+            var cityFromDb = await uow.CityRepository.FindCity(id);
+            cityFromDb.LastUpdatedOn = System.DateTime.Now;
+            cityFromDb.LastUpdatedBy = 1;
+            mapper.Map(cityDto, cityFromDb);
+            await uow.SaveAsync();
+            return StatusCode(201);
+        }
+
+         [HttpPut("update/{id}")]
+        public async Task<IActionResult> UpdateCity(int id, CityUpdateDto cityDto) {
             var cityFromDb = await uow.CityRepository.FindCity(id);
             cityFromDb.LastUpdatedOn = System.DateTime.Now;
             cityFromDb.LastUpdatedBy = 1;
