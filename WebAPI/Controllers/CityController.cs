@@ -37,6 +37,7 @@ namespace WebAPI.Controllers
         // PUT api/city/updateCitiName/3
 
         [HttpPut("updateCitiName/{id}")]
+        
         public async Task<IActionResult> UpdateCity(int id, CityDto cityDto) {
             var cityFromDb = await uow.CityRepository.FindCity(id);
             cityFromDb.LastUpdatedOn = System.DateTime.Now;
