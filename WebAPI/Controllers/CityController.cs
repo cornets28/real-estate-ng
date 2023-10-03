@@ -34,7 +34,8 @@ namespace WebAPI.Controllers
             return Ok(citiesDto);
         }
 
-        // PUT api/city/updateCitiName/2 
+        // PUT api/city/updateCitiName/3
+
         [HttpPut("updateCitiName/{id}")]
         public async Task<IActionResult> UpdateCity(int id, CityDto cityDto) {
             var cityFromDb = await uow.CityRepository.FindCity(id);
