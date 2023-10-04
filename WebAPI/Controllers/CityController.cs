@@ -34,20 +34,36 @@ namespace WebAPI.Controllers
             return Ok(citiesDto);
         }
 
-        // PUT api/city/updateCitiName/3
-
-        [HttpPut("updateCitiName/{id}")]
+        // PUT api/city/update/3
+        [HttpPut("update/{id}")]
         
         public async Task<IActionResult> UpdateCity(int id, CityDto cityDto) {
             var cityFromDb = await uow.CityRepository.FindCity(id);
-            cityFromDb.LastUpdatedOn = System.DateTime.Now;
-            cityFromDb.LastUpdatedBy = 1;
-            mapper.Map(cityDto, cityFromDb);
-            await uow.SaveAsync();
-            return StatusCode(201);
+
+            try
+            {
+                if (id != cityDto.Id)
+                return BadRequest("Update not allowed");
+
+                if (cityFromDb == null)
+                    return BadRequest("Update not allowed");
+                    
+                cityFromDb.LastUpdatedOn = System.DateTime.Now;
+                cityFromDb.LastUpdatedBy = 1;
+                mapper.Map(cityDto, cityFromDb);
+                await uow.SaveAsync();
+                return StatusCode(201);
+            }
+            catch (System.Exception)
+            {
+                return StatusCode(500, "Update not allowed");
+            }
+
+            
         }
 
-         [HttpPut("update/{id}")]
+        // PUT api/city/updateCitiName/3
+        [HttpPut("updateCitiName/{id}")]
         public async Task<IActionResult> UpdateCity(int id, CityUpdateDto cityDto) {
             var cityFromDb = await uow.CityRepository.FindCity(id);
             cityFromDb.LastUpdatedOn = System.DateTime.Now;
