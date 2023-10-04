@@ -11,11 +11,18 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using WebAPI.Middlewares;
+
+using System.Net;
 using WebAPI.Models;
 using WebAPI.Data;
 using WebAPI.Data.Repo;
 using WebAPI.Interfaces;
 using WebAPI.Helpers;
+using WebAPI.Extensions;
+
 
 namespace WebAPI
 {
@@ -47,18 +54,17 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
-            }
+        
+            app.ConfigureExceptionHandler(env); 
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
 
             app.UseRouting();
 
-            app.UseAuthorization();
+             app.UseCors(m => m.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
-            app.UseCors(m => m.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
