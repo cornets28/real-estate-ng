@@ -1,6 +1,3 @@
-// using System;
-// using System.Collections.Generic;
-// using System.Linq;
 using System.Threading.Tasks;
 using WebAPI.Interfaces;
 using WebAPI.Data.Repo;
@@ -14,8 +11,10 @@ namespace WebAPI.Data
         {
             this.dc = dc;
         }
-        
         public ICityRepository CityRepository => new CityRepository(dc);
+
+        public IUserRepository UserRepository => new UserRepository(dc);
+
 
         public async Task<bool> SaveAsync()
         {
