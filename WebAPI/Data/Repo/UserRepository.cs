@@ -17,12 +17,34 @@ namespace WebAPI.Data.Repo
             this.dc = dc;
         }
 
-       public async Task<User> Authenticate(string userName, string password)
-       {
-            return await dc.Users.FirstOrDefaultAsync(x => x.UserName == userName
-                // && x.Password == password
-            );
-       }
+       public async Task<User> Authenticate(string userName, string passwordText)
+        {
+            var user =  await dc.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+
+            if (user == null || user.PasswordKey == null)
+                return null;
+
+            if (!MatchPasswordHash(passwordText, user.Password, user.PasswordKey))
+                return null;
+
+            return user;
+        }
+
+        private bool MatchPasswordHash(string passwordText, byte[] password, byte[] passwordKey)
+        {
+            using (var hmac = new HMACSHA512(passwordKey))
+            {
+                var passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(passwordText));
+
+                for (int i=0; i<passwordHash.Length; i++)
+                {
+                    if (passwordHash[i] != password[i])
+                        return false;
+                }
+
+                return true;
+            }            
+        }
 
        public void Register(string userName, string password)
        {
