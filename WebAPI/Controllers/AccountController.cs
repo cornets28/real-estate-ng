@@ -12,7 +12,7 @@ using WebAPI.Extensions;
 using WebAPI.Interfaces;
 using WebAPI.Models;
 
-using System.Net;
+// using System.Net;
 
 
 namespace WebAPI.Controllers
@@ -43,6 +43,18 @@ namespace WebAPI.Controllers
             loginRes.UserName = user.UserName;
             loginRes.Token = CreateJWT(user);
             return Ok(loginRes);
+        }
+        
+        // POST api/account/register
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register(LoginReqDto loginReq)
+        {
+            if (await uow.UserRepository.UserAlreadyExists(loginReq.UserName))
+                return BadRequest("User already exists, please tyr something else");
+
+            uow.UserRepository.Register(loginReq.UserName, loginReq.Password);
+            await uow.SaveAsync();
+            return StatusCode(201);
         }
         private string CreateJWT(User user) 
         {   

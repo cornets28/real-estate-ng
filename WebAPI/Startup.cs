@@ -35,6 +35,11 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // var builder = new SqlConnectionStringBuilder(
+            //     Configuration.GetConnectionString("Default")
+            // );
+            // builder.AddDbContext = Configuration.GetSection("DBPassword").Value;
+
             services.AddCors();
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddControllers().AddNewtonsoftJson();
