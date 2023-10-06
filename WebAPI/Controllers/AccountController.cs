@@ -12,6 +12,8 @@ using WebAPI.Extensions;
 using WebAPI.Interfaces;
 using WebAPI.Models;
 
+using System.Net;
+
 
 namespace WebAPI.Controllers
 {
@@ -44,9 +46,12 @@ namespace WebAPI.Controllers
         }
         private string CreateJWT(User user) 
         {   
-            var secretKey = configuration.GetSection("AppSettings:Key").Value;
+            //For Windows OS
+            // var secretKey = configuration.GetSection("AppSettings:Key").Value;
+
+            // For Mac OS // You should set this local variable on your OS system (e.g. if you're using .zhsrc: export ASPNETCORE_AppSettings__Key="enter_any_sting_here" ) and add it in you Startup.cs file
+            var secretKey = configuration["ASPNETCORE_AppSettings__Key"];
             var key = new SymmetricSecurityKey(Encoding.UTF8
-            // TODO: set up the secret key in the appSettings.cs file
                  .GetBytes(secretKey));
 
              var claims = new Claim[] {
