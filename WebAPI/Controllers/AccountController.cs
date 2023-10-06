@@ -12,6 +12,8 @@ using WebAPI.Extensions;
 using WebAPI.Interfaces;
 using WebAPI.Models;
 
+// using System.Net;
+
 
 namespace WebAPI.Controllers
 {
@@ -42,11 +44,26 @@ namespace WebAPI.Controllers
             loginRes.Token = CreateJWT(user);
             return Ok(loginRes);
         }
+        
+        // POST api/account/register
+        [HttpPost("Register")]
+        public async Task<IActionResult> Register(LoginReqDto loginReq)
+        {
+            if (await uow.UserRepository.UserAlreadyExists(loginReq.UserName))
+                return BadRequest("User already exists, please tyr something else");
+
+            uow.UserRepository.Register(loginReq.UserName, loginReq.Password);
+            await uow.SaveAsync();
+            return StatusCode(201);
+        }
         private string CreateJWT(User user) 
         {   
-            var secretKey = configuration.GetSection("AppSettings:Key").Value;
+            //For Windows OS
+            // var secretKey = configuration.GetSection("AppSettings:Key").Value;
+
+            // For Mac OS // You should set this local variable on your OS system (e.g. if you're using .zhsrc: export ASPNETCORE_AppSettings__Key="enter_any_sting_here" ) and add it in you Startup.cs file
+            var secretKey = configuration["ASPNETCORE_AppSettings__Key"];
             var key = new SymmetricSecurityKey(Encoding.UTF8
-            // TODO: set up the secret key in the appSettings.cs file
                  .GetBytes(secretKey));
 
              var claims = new Claim[] {

@@ -35,15 +35,24 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // var builder = new SqlConnectionStringBuilder(
+            //     Configuration.GetConnectionString("Default")
+            // );
+            // builder.AddDbContext = Configuration.GetSection("DBPassword").Value;
+
             services.AddCors();
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddControllers().AddNewtonsoftJson();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+            
+            // For Windows OS
+            // var secretKey = Configuration.GetSection("AppSettings:Key").Value;
+            
+            // For Mac OS // You should set this local variable on your OS system (e.g. if you're using .zhsrc: export ASPNETCORE_AppSettings__Key="enter_any_sting_here" ) and add it in you Startup.cs file
+            var secretKey = Configuration["ASPNETCORE_AppSettings__Key"];
 
-            var secretKey = Configuration.GetSection("AppSettings:Key").Value;
             var key = new SymmetricSecurityKey(Encoding.UTF8
-            // TODO: set up the secret key in the appSettings.cs file
                 .GetBytes(secretKey));
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
