@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { IPropertyBase } from '../model/ipropertybase';
 import { Property } from '../model/property';
+import { environment } from 'environments/environment';
 
 
 @Injectable({
@@ -10,11 +11,16 @@ import { Property } from '../model/property';
 })
 export class HousingService {
 
+  baseUrl = environment.baseUrl;
   constructor(private http: HttpClient) { }
 
   getAllCities(): Observable<string[]> {
-    return this.http.get<string[]>('http://localhost:5000/api/city')
+     // @ts-ignore
+  console.log("baseUrl:", this.baseUrl)
+    return this.http.get<string[]>(this.baseUrl + '/city')
+
   }
+
 
   // Get single property by its id
   getProperty(id: number) {
