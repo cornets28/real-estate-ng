@@ -46,7 +46,7 @@ namespace WebAPI.Data.Repo
             }            
         }
 
-       public void Register(string userName, string password)
+       public void Register(string userName, string password, string userMobile, string userEmail)
        {
             byte[] passwordHash,  passwordKey;
 
@@ -60,6 +60,8 @@ namespace WebAPI.Data.Repo
             user.UserName = userName;
             user.Password = passwordHash;
             user.PasswordKey = passwordKey;
+            user.UserEmail = userEmail;
+            user.UserMobile = userMobile;
 
             dc.Users.Add(user);
 

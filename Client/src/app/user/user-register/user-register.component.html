@@ -2,7 +2,7 @@
   <div class="col-6 m-auto">
     <div class="card m-auto">
       <div class="card-header">
-        Register
+        <h3>Register</h3>
       </div>
       <div class="card-body">
         <form [formGroup]="registerationForm" (ngSubmit)="onSubmit()">
@@ -16,12 +16,12 @@
 
           <div class="form-group col-12">
             <label for="email" class="form-label">Email</label>
-            <input type="text" class="form-control" formControlName="email">
-            <span class="error-block" *ngIf="!email?.valid && (email?.touched || userSubmitted)">
-              <span *ngIf="email.hasError('required')">
-                Please provide name email id
+            <input type="text" class="form-control" formControlName="userEmail">
+            <span class="error-block" *ngIf="!userEmail?.valid && (userEmail?.touched || userSubmitted)">
+              <span *ngIf="userEmail?.hasError('required')">
+                Please provide name userEmail id
               </span>
-              <span *ngIf="email.hasError('email')">
+              <span *ngIf="userEmail?.hasError('userEmail')">
                 Please provide name email id
               </span>
             </span>
@@ -44,7 +44,7 @@
             <label for="cpassword" class="form-label">Confirm Password</label>
             <input type="password" class="form-control" formControlName="confirmPassword">
             <span class="error-block" *ngIf="!confirmPassword?.valid && (confirmPassword?.touched || userSubmitted)">
-              <span *ngIf="confirmPassword.hasError('required')">
+              <span *ngIf="confirmPassword?.hasError('required')">
                 Please confirm password
               </span>
 
@@ -56,12 +56,12 @@
 
           <div class="form-group col-12">
             <label for="mobile" class="form-label">Mobile</label>
-            <input type="text" class="form-control" formControlName="mobile">
-            <span class="error-block" *ngIf="!mobile?.valid && (mobile?.touched || userSubmitted)">
-              <span *ngIf="mobile && mobile.errors && mobile.errors['required']">
-                Please provide mobile
+            <input type="text" class="form-control" formControlName="userMobile">
+            <span class="error-block" *ngIf="!userMobile?.valid && (userMobile?.touched || userSubmitted)">
+              <span *ngIf="userMobile && userMobile.errors && userMobile.errors['required']">
+                Please provide userMobile
               </span>
-              <span *ngIf="mobile.errors && mobile.errors['maxLength']">
+              <span *ngIf="userMobile && userMobile.errors && userMobile.errors['maxLength']">
                 Mobile should not be greater than 8 characters
               </span>
             </span>
