@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,6 +25,7 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { PropertyDetailResolverService } from './property/property-detail/property-detail-resolver.service';
 import { FilterPipe } from './Pipes/filter.pipe';
 import { SortPipe } from './Pipes/sort.pipe';
+import { HttpErrorInterceptorService } from './services/htperror-interceptor.service';
 
 const AppRoutes: Routes = [
   { path: '', component: PropertyListComponent },
@@ -65,6 +66,11 @@ const AppRoutes: Routes = [
     NgxGalleryModule,
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpErrorInterceptorService,
+      multi: true
+    },
     HousingService,
     AlertifyService,
     AuthService,
