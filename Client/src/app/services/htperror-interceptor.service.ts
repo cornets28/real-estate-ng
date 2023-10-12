@@ -1,7 +1,8 @@
 import { HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, throwError } from 'rxjs';
+import { Observable, catchError, concatMap, retryWhen, throwError } from 'rxjs';
 import { AlertifyService } from './alertify.service';
+import { ErrorCode } from '../enums/enums';
 
 @Injectable({
   providedIn: 'root'
@@ -15,13 +16,41 @@ export class HttpErrorInterceptorService implements HttpInterceptor {
     console.log('HTTP Request started');
     return next.handle(request)
         .pipe(
-            catchError((error: HttpErrorResponse) => {
-                const errorMessage = this.setError(error);
-                console.log(error);
-                this.alertify.error(errorMessage);
-                return throwError(errorMessage);
-            })
+          retryWhen( error => this.retryRequest(error, 10)),
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage = this.setError(error);
+            console.log(error);
+            this.alertify.error(errorMessage);
+            return throwError(errorMessage);
+          })
         );
+}
+
+// Retry the request in case of error
+retryRequest(error: Observable<unknown>, retryCount: number) : Observable<unknown>
+{
+  return error.pipe(
+    // @ts-ignore
+    concatMap((checkErr: HttpErrorResponse, count: number) => {
+
+      if (count <= retryCount)
+      {
+        switch(checkErr.status){
+           // Retry in case WebApi is down
+          case ErrorCode.serverDown :
+            // @ts-ignore
+            return of(checkErr);
+
+            // Retry in case unauthorized error
+          // case ErrorCode.unauthorized :
+          //   // @ts-ignore
+          //   return of(checkErr);
+        }
+      }
+
+      return throwError(checkErr);
+    })
+  )
 }
 
 setError(error: HttpErrorResponse): string {
