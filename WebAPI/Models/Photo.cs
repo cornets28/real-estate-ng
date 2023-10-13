@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace WebAPI.Models
 {
     [Table("Photos")]
-    public class Photo : BaseEntity
+    public class Photo: BaseEntity
     {        
         [Required]
         public string PublicId { get; set; }
