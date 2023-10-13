@@ -24,55 +24,56 @@ export class HousingService {
 
   // Get single property by its id
   getProperty(id: number) {
-    return this.getAllProperties().pipe(
+    return this.getAllProperties(1).pipe(
       map(propertyArray => {
-        return propertyArray.find(p => p.Id === id);
+        return propertyArray.find(p => p.id === id);
       })
     )
   }
 
   getAllProperties(SellRent?: number): Observable<Property[]> {
-    return this.http.get('data/properties.json')
-    // convert properties into array
-    .pipe(
-      map(data => {
-        const propertiesArray: Array<Property> = [];
-        // @ts-ignore
-        const localProperties = JSON.parse(localStorage.getItem('newProp'));
-        if (localProperties) {
-          for (const id in localProperties) {
-            if (SellRent) {
-              // @ts-ignore
-              if (localProperties.hasOwnProperty(id) && localProperties[id].SellRent === SellRent) {
-                // @ts-ignore
-                propertiesArray.push(localProperties[id]);
-              }
-            } else {
-              // @ts-ignore
-              propertiesArray.push(localProperties[id]);
-            }
+    return this.http.get<Property[]>(this.baseUrl + '/property/list/' + SellRent?.toString())
+    // return this.http.get('data/properties.json')
+    // // convert properties into array
+    // .pipe(
+    //   map(data => {
+    //     const propertiesArray: Array<Property> = [];
+    //     // @ts-ignore
+    //     const localProperties = JSON.parse(localStorage.getItem('newProp'));
+    //     if (localProperties) {
+    //       for (const id in localProperties) {
+    //         if (SellRent) {
+    //           // @ts-ignore
+    //           if (localProperties.hasOwnProperty(id) && localProperties[id].SellRent === SellRent) {
+    //             // @ts-ignore
+    //             propertiesArray.push(localProperties[id]);
+    //           }
+    //         } else {
+    //           // @ts-ignore
+    //           propertiesArray.push(localProperties[id]);
+    //         }
 
-          }
-        }
-
-
-        for (const id in data) {
-          if (SellRent) {
-            // @ts-ignore
-            if (data.hasOwnProperty(id) && data[id].SellRent === SellRent) {
-              // @ts-ignore
-              propertiesArray.push(data[id]);
-            }
-          } else {
-            // @ts-ignore
-            propertiesArray.push(data[id]);
-          }
+    //       }
+    //     }
 
 
-        }
-        return propertiesArray;
-      })
-    )
+    //     for (const id in data) {
+    //       if (SellRent) {
+    //         // @ts-ignore
+    //         if (data.hasOwnProperty(id) && data[id].SellRent === SellRent) {
+    //           // @ts-ignore
+    //           propertiesArray.push(data[id]);
+    //         }
+    //       } else {
+    //         // @ts-ignore
+    //         propertiesArray.push(data[id]);
+    //       }
+
+
+    //     }
+    //     return propertiesArray;
+    //   })
+    // )
   }
 
   addProperty(property: Property) {
