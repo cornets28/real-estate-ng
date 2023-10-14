@@ -18,8 +18,8 @@ export class PropertyDetailComponent implements OnInit {
   property = new Property();
   galleryOptions!: NgxGalleryOptions[];
   galleryImages!: NgxGalleryImage[];
-  
-  constructor(private route: ActivatedRoute, 
+
+  constructor(private route: ActivatedRoute,
               private router: Router,
               private housingService: HousingService) { }
 
@@ -37,6 +37,8 @@ export class PropertyDetailComponent implements OnInit {
         )
       }
     )
+
+    this.property.age = this.housingService.getPropertyAge(this.property.estPossessionOn)
 
 
     this.galleryOptions = [
@@ -76,7 +78,7 @@ export class PropertyDetailComponent implements OnInit {
         big: 'assets/images/internal-5.png'
       }
     ];
-    
+
   }
 
 

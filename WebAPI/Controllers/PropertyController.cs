@@ -34,5 +34,15 @@ namespace WebAPI.Controllers
             var propertyListDTO = mapper.Map<IEnumerable<PropertyListDto>>(properties);
             return Ok(propertyListDTO);
         }
+
+         // api/property/detail/1
+        [HttpGet("detail/{id}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetPropertyDetail(int id)
+        {
+            var property = await uow.PropertyRepository.GetPropertyDetailAsync(id);
+            var propertyDetailDTO = mapper.Map<PropertyDetailDto>(property);
+            return Ok(propertyDetailDTO);
+        }
     }
 }

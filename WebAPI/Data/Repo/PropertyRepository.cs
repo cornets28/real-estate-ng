@@ -35,5 +35,16 @@ namespace WebAPI.Data.Repo
                 .ToListAsync();
             return properties;
         }
+
+        public async Task<Property> GetPropertyDetailAsync(int id)
+        {
+            var property= await dc.Properties
+                .Include(p => p.PropertyType)
+                .Include(p => p.FurnishingType)
+                .Include(p => p.City)
+                .Where(p => p.Id == id)
+                .FirstAsync();
+            return property;
+        }
     }
 }
