@@ -107,7 +107,8 @@
                     Please select city
                   </div> -->
 
-                  <div class="error-block" *ngIf="addPropertyForm.get('BasicInfo.City')?.invalid && (nextClicked || addPropertyForm.get('BasicInfo.City')?.touched)">
+                  <div class="error-block"
+                  *ngIf="addPropertyForm.get('BasicInfo.City')?.invalid && (nextClicked || addPropertyForm.get('BasicInfo.City')?.touched)">
                     Please select city
                   </div>
                 </div>

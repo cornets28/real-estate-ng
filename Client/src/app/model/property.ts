@@ -1,18 +1,20 @@
 import { IPropertyBase } from './ipropertybase';
 
 export class Property implements IPropertyBase {
-    // @ts-ignore
-  id: number;
+  id!: number;
   sellRent!: number;
   name!: string;
+  propertyTypeId!: number;
   propertyType!: string;
   bhk!: number;
+  furnishingTypeId!: number;
   furnishingType!: string;
   price!: string;
   builtArea!: string;
   carpetArea?: number;
   address!: string;
   address2?: string;
+  cityId!: number;
   city!: string;
   floorNo?: string;
   totalFloors?: string;
@@ -22,7 +24,7 @@ export class Property implements IPropertyBase {
   security?: number;
   gated?: boolean;
   maintenance?: number;
-  estPossessionOn!: string;
+  estPossessionOn?: string;
   image?: string;
   description?: string;
   // PostedOn!: string;

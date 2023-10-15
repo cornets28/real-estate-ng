@@ -35,7 +35,7 @@ namespace WebAPI.Controllers
             return Ok(propertyListDTO);
         }
 
-         // api/property/detail/1
+         // GET api/property/detail/1
         [HttpGet("detail/{id}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetPropertyDetail(int id)
@@ -43,6 +43,19 @@ namespace WebAPI.Controllers
             var property = await uow.PropertyRepository.GetPropertyDetailAsync(id);
             var propertyDetailDTO = mapper.Map<PropertyDetailDto>(property);
             return Ok(propertyDetailDTO);
+        }
+
+        // POST api/property/add
+        [HttpPost("add")]
+        [AllowAnonymous]
+        public async Task<IActionResult> AddProperty(PropertyDto propertyDto)
+        {
+            var property = mapper.Map<Property>(propertyDto);
+            property.PostedBy = 1;
+            property.LastUpdatedBy = 1;
+            uow.PropertyRepository.AddProperty(property);
+            await uow.SaveAsync();
+            return StatusCode(201);
         }
     }
 }
