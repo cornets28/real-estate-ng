@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IKeyvaluepair } from 'src/app/model/ikeyvaluepair';
 import { IPropertyBase } from 'src/app/model/ipropertybase';
 import { Property } from 'src/app/model/property';
 import { AlertifyService } from 'src/app/services/alertify.service';
@@ -12,6 +13,9 @@ import { HousingService } from 'src/app/services/housing.service';
   styleUrls: ['./add-property.component.css']
 })
 export class AddPropertyComponent implements OnInit {
+// parseFloat(arg0: string): number|null {
+// throw new Error('Method not implemented.');
+// }
   // @ts-ignore
   // @ViewChild('Form') addPropertyForm: NgForm;
   // @ts-ignore
@@ -27,8 +31,8 @@ export class AddPropertyComponent implements OnInit {
     private alertify: AlertifyService) { }
 
   // Will come form masters
-  propertyTypes: Array<string> = ['House', 'Apartment', 'Duplex']
-  furnishTypes: Array<string> = ['Fully', 'Semi', 'unfurnished']
+  propertyTypes!: IKeyvaluepair[];
+  furnishTypes!: IKeyvaluepair[];
   locationType: Array<string> = ['East', 'West', 'South', 'North']
   cityList!: any[];
 
@@ -42,7 +46,8 @@ export class AddPropertyComponent implements OnInit {
     bhk: null,
     builtArea: null,
     city: '',
-    readyToMove: 0,
+    // @ts-ignore
+    readyToMove: null,
   };
 
   ngOnInit() {
@@ -51,6 +56,14 @@ export class AddPropertyComponent implements OnInit {
       // console.log("DATA SAMUEL", data)
       this.cityList = data;
     })
+
+    this.housingService.getPropertyTypes().subscribe(data => {
+      this.propertyTypes = data;
+    } );
+
+    this.housingService.getFurnishingTypes().subscribe(data => {
+      this.furnishTypes = data;
+    } );
   }
 
   CreateAddPropertyForm() {
