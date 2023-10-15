@@ -37,7 +37,7 @@ export class PropertyDetailComponent implements OnInit {
         )
       }
     )
-
+    // @ts-ignore
     this.property.age = this.housingService.getPropertyAge(this.property.estPossessionOn)
 
 
