@@ -1,6 +1,8 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { IKeyvaluepair } from 'src/app/model/ikeyvaluepair';
 import { IPropertyBase } from 'src/app/model/ipropertybase';
 import { Property } from 'src/app/model/property';
 import { AlertifyService } from 'src/app/services/alertify.service';
@@ -12,6 +14,9 @@ import { HousingService } from 'src/app/services/housing.service';
   styleUrls: ['./add-property.component.css']
 })
 export class AddPropertyComponent implements OnInit {
+// parseFloat(arg0: string): number|null {
+// throw new Error('Method not implemented.');
+// }
   // @ts-ignore
   // @ViewChild('Form') addPropertyForm: NgForm;
   // @ts-ignore
@@ -21,14 +26,15 @@ export class AddPropertyComponent implements OnInit {
   property = new Property();
 
   constructor(
+    private datePipe: DatePipe,
     private fb: FormBuilder,
     private router: Router,
     private housingService: HousingService,
     private alertify: AlertifyService) { }
 
   // Will come form masters
-  propertyTypes: Array<string> = ['House', 'Apartment', 'Duplex']
-  furnishTypes: Array<string> = ['Fully', 'Semi', 'unfurnished']
+  propertyTypes!: IKeyvaluepair[];
+  furnishTypes!: IKeyvaluepair[];
   locationType: Array<string> = ['East', 'West', 'South', 'North']
   cityList!: any[];
 
@@ -42,7 +48,8 @@ export class AddPropertyComponent implements OnInit {
     bhk: null,
     builtArea: null,
     city: '',
-    readyToMove: 0,
+    // @ts-ignore
+    readyToMove: null,
   };
 
   ngOnInit() {
@@ -51,6 +58,14 @@ export class AddPropertyComponent implements OnInit {
       // console.log("DATA SAMUEL", data)
       this.cityList = data;
     })
+
+    this.housingService.getPropertyTypes().subscribe(data => {
+      this.propertyTypes = data;
+    } );
+
+    this.housingService.getFurnishingTypes().subscribe(data => {
+      this.furnishTypes = data;
+    } );
   }
 
   CreateAddPropertyForm() {
@@ -206,16 +221,16 @@ export class AddPropertyComponent implements OnInit {
     this.nextClicked = true;
     if (this.allTabsValid()) {
       this.mapProperty();
-      this.housingService.addProperty(this.property);
-      this.alertify.success('Congrats, your property listed successfully on our website');
-      console.log(this.addPropertyForm);
+      this.housingService.addProperty(this.property).subscribe(() => {
+        this.alertify.success('Congrats, your property listed successfully on our website');
+        console.log(this.addPropertyForm);
 
-      if(this.SellRent.value === '2') {
-        this.router.navigate(['/rent-property']);
-      } else {
-        this.router.navigate(['/']);
-      }
-
+        if(this.SellRent.value === '2') {
+          this.router.navigate(['/rent-property']);
+        } else {
+          this.router.navigate(['/']);
+        }
+      });
 
     } else {
       this.alertify.error('Please review the form and provide all valid entries');
@@ -226,10 +241,10 @@ export class AddPropertyComponent implements OnInit {
     this.property.id = this.housingService.newPropID();
     this.property.sellRent = +this.SellRent.value;
     this.property.bhk = this.BHK.value;
-    this.property.propertyType = this.PType.value;
+    this.property.propertyTypeId = this.PType.value;
     this.property.name = this.Name.value;
-    this.property.city = this.City.value;
-    this.property.furnishingType = this.FType.value;
+    this.property.cityId = this.City.value;
+    this.property.furnishingTypeId = this.FType.value;
     this.property.price = this.Price.value;
     this.property.security = this.Security.value;
     this.property.maintenance = this.Maintenance.value;
@@ -243,7 +258,7 @@ export class AddPropertyComponent implements OnInit {
     this.property.age = this.AOP.value;
     this.property.gated = this.Gated.value;
     this.property.mainEntrance = this.MainEntrance.value;
-    this.property.estPossessionOn = this.PossessionOn.value;
+    this.property.estPossessionOn = this.PossessionOn.value && this.datePipe.transform(this.PossessionOn.value, 'MM/dd/yyyy');
     this.property.description = this.Description.value;
     // this.property.PostedOn = new Date().toString();
   }

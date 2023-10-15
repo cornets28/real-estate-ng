@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 import { IPropertyBase } from '../model/ipropertybase';
 import { Property } from '../model/property';
 import { environment } from 'environments/environment';
+import { IKeyvaluepair } from '../model/ikeyvaluepair';
 
 
 @Injectable({
@@ -19,6 +20,16 @@ export class HousingService {
   console.log("baseUrl:", this.baseUrl)
     return this.http.get<string[]>(this.baseUrl + '/city')
 
+  }
+
+   // Get property type
+   getPropertyTypes(): Observable<IKeyvaluepair[]> {
+    return this.http.get<IKeyvaluepair[]>(this.baseUrl + '/propertytype/list') ;
+  }
+
+  // Get furnishing type
+   getFurnishingTypes(): Observable<IKeyvaluepair[]> {
+    return this.http.get<IKeyvaluepair[]>(this.baseUrl + '/furnishingtype/list') ;
   }
 
 
@@ -78,16 +89,17 @@ export class HousingService {
   }
 
   addProperty(property: Property) {
-    let newProp = [property];
+    return this.http.post(this.baseUrl + '/property/add', property);
+    // let newProp = [property];
 
-    // Add new property in array if newProp alreay exists in local storage
-    if (localStorage.getItem('newProp')) {
-      // if yes, increase the id by 1
-       // @ts-ignore
-      newProp = [property, ...JSON.parse(localStorage.getItem('newProp'))];
-    }
+    // // Add new property in array if newProp alreay exists in local storage
+    // if (localStorage.getItem('newProp')) {
+    //   // if yes, increase the id by 1
+    //    // @ts-ignore
+    //   newProp = [property, ...JSON.parse(localStorage.getItem('newProp'))];
+    // }
 
-    localStorage.setItem('newProp', JSON.stringify(newProp));
+    // localStorage.setItem('newProp', JSON.stringify(newProp));
   }
 
 

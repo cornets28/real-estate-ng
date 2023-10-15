@@ -17,7 +17,7 @@ namespace WebAPI.Data.Repo
         }
         public void AddProperty(Property property)
         {
-
+            dc.Properties.Add(property);
         }
 
         public void DeleteProperty(int id) 
